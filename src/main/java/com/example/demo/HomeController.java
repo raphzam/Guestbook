@@ -78,7 +78,12 @@ public class HomeController {
     public String likePost(@PathVariable("name") String name, Model model){
         for (Post post : listOfPosts){
             if(post.getName().equals(name)){
-                post.setLiked(true);
+                if (post.isLiked()==false) {
+                    post.setLiked(true);
+                } else {
+                    post.setLiked(false);
+                }
+                break;
             }
         }
         return "redirect:/";
