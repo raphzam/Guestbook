@@ -12,14 +12,43 @@
     <title>Home</title>
 </head>
 <body>
-<h1 class="text-center">Guest Entries</h1>
 
+
+<div th:fragment="navLinks">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" th:href="@{/welcome}">Gradbook</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/add}">New Post</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+      Congratulations 2020 Graduates!
+    </span>
+        </div>
+    </nav>
+</div>
+
+
+<h1 class="text-center">Guest Entries</h1>
 <div th:each="post : ${listOfPosts}">
     From: [[${post.name}]]<br>
     [[${post.date}]]<br>
     [[${post.wishes}]]<br>
 
     <a href="#" th:href="@{/view/{name} (name = ${post.name})}">view</a>
+    <a href="#" th:href="@{/update/{name} (name = ${post.name})}">update</a>
     <a href="#" th:href="@{/delete/{name} (name = ${post.name})}">delete</a>
 
 <hr>

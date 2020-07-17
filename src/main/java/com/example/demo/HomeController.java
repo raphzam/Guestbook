@@ -2,10 +2,7 @@ package com.example.demo;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -55,6 +52,26 @@ public class HomeController {
             }
         }
         return "redirect:/";
+    }
+
+    @RequestMapping("/update/{name}")
+    public String updatePost(@PathVariable("name") String name, Model model){
+    Post editedPost = new Post();
+        for (Post post : listOfPosts){
+            if(post.getName().equals(name)){
+                editedPost = post;
+                listOfPosts.remove(post);
+                break;
+            }
+        }
+        model.addAttribute("post", editedPost);
+        return "newpost";
+    }
+
+
+    @GetMapping("/welcome")
+    public String welcomePage(){
+        return "welcome";
     }
 
 
