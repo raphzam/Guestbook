@@ -10,22 +10,93 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>New Post</title>
+
+    <style>
+        textarea {
+            resize: none;
+        }
+        .form-label {
+            font-size: 12px;
+            color: #5e9bfc;
+            margin: 0;
+            display: block;
+            opacity: 1;
+            -webkit-transition: .333s ease top, .333s ease opacity;
+            transition: .333s ease top, .333s ease opacity;
+        }
+        .form-control {
+            border-radius: 0;
+            border-color: #ccc;
+            border-width: 0 0 2px 0;
+            border-style: none none solid none;
+            box-shadow: none;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #5e9bfc;
+        }
+        .js-hide-label {
+            opacity: 0;
+        }
+        .js-unhighlight-label {
+            color: #999
+        }
+        .btn-start-order {
+            background: 0 0 #ffffff;
+            border: 1px solid #2f323a;
+            border-radius: 3px;
+            color: #2f323a;
+            font-family: "Raleway", sans-serif;
+            font-size: 16px;
+            line-height: inherit;
+            margin: 30px 0;
+            padding: 10px 50px;
+            text-transform: uppercase;
+            transition: all 0.25s ease 0s;
+        }
+        .btn-start-order:hover,.btn-start-order:active, .btn-start-order:focus {
+            border-color: #5e9bfc;
+            color: #5e9bfc;
+        }
+
+    </style>
+<div th:replace="home::styles"></div>
+
+
+
 </head>
 <body>
 
 <div th:replace="home :: navLinks"></div>
 
-
-<h1>New Post</h1>
-<form th:action="@{/confirmpost}" th:object="${post}" method="post">
-
-    Name: <input type="text" th:field="*{name}" placeholder="name"><br>
-    Date: <input type="text" th:field="*{date}" placeholder="date"><br>
-    Wishes: <input type="text" th:field="*{wishes}" placeholder="wishes"><br>
-
-    <input type="submit" value="Post">
-
-</form>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+            <h2>New Post</h2>
+        </div>
+    </div>
+    <div class="row" style="margin-left: 35%">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3">
+            <form id="contact-form" class="form" th:action="@{/confirmpost}" th:object="${post}" method="post" role="form">
+                <div class="form-group">
+                    <label class="form-label" for="name">Your Name</label>
+                    <input type="text" th:field="*{name}" class="form-control" id="name" name="name" placeholder="Your name" tabindex="1" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="email">Date</label>
+                    <input type="text" th:field="*{date}" class="form-control" id="email" name="email" placeholder="Date" tabindex="2" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="message">Message</label>
+                    <textarea th:field="*{wishes}" rows="5" cols="50" name="message" class="form-control" id="message" placeholder="Message..." tabindex="4" required></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-start-order">Send Message</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -38,5 +109,69 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        // Test for placeholder support
+        $.support.placeholder = (function(){
+            var i = document.createElement('input');
+            return 'placeholder' in i;
+        })();
+
+        // Hide labels by default if placeholders are supported
+        if($.support.placeholder) {
+            $('.form-label').each(function(){
+                $(this).addClass('js-hide-label');
+            });
+
+            // Code for adding/removing classes here
+            $('.form-group').find('input, textarea').on('keyup blur focus', function(e){
+
+                // Cache our selectors
+                var $this = $(this),
+                    $label = $this.parent().find("label");
+
+                switch(e.type) {
+                    case 'keyup': {
+                        $label.toggleClass('js-hide-label', $this.val() == '');
+                    } break;
+                    case 'blur': {
+                        if( $this.val() == '' ) {
+                            $label.addClass('js-hide-label');
+                        } else {
+                            $label.removeClass('js-hide-label').addClass('js-unhighlight-label');
+                        }
+                    } break;
+                    case 'focus': {
+                        if( $this.val() !== '' ) {
+                            $label.removeClass('js-unhighlight-label');
+                        }
+                    } break;
+                    default: break;
+                }
+                // previous implementation with ifs
+                /*if (e.type == 'keyup') {
+                    if( $this.val() == '' ) {
+                        $parent.addClass('js-hide-label');
+                    } else {
+                        $parent.removeClass('js-hide-label');
+                    }
+                }
+                else if (e.type == 'blur') {
+                    if( $this.val() == '' ) {
+                        $parent.addClass('js-hide-label');
+                    }
+                    else {
+                        $parent.removeClass('js-hide-label').addClass('js-unhighlight-label');
+                    }
+                }
+                else if (e.type == 'focus') {
+                    if( $this.val() !== '' ) {
+                        $parent.removeClass('js-unhighlight-label');
+                    }
+                }*/
+            });
+        }
+    });
+</script>
 </body>
 </html>

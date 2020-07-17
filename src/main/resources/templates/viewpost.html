@@ -12,19 +12,43 @@
     <title>View Post</title>
 </head>
 <body>
-
+<div th:replace="home::styles"></div>
 <div th:replace="home :: navLinks"></div>
 
+<div class="container">
+    <div class="row">
+        <div class="col">
 
-<h1 class="text-center">Post Detail</h1>
+        </div>
+        <div class="col-6">
+            <h1 class="text-center">Post Detail</h1>
+                <div class="card">
+                    <div class="card-header">
+                        Date: [[${post.date}]]
+                    </div>
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p class="wishes">[[${post.wishes}]]</p>
+                            <footer class="blockquote-footer">[[${post.name}]]</footer>
+                        </blockquote>
 
-<p th:inline="text">
+                        <div th:fragment="modifyPosts">
+                            <a href="#" th:href="@{/like/{name} (name = ${post.name})}"><span th:if="${post.liked == true}"><i class="fas fa-heart"></i></span></a>
+                            <a href="#" th:href="@{/like/{name} (name = ${post.name})}"><span th:if="${post.liked == false}"><i class="far fa-heart"></i></span></a>
+                            <a href="#" th:href="@{/view/{name} (name = ${post.name})}"><i class="fas fa-info"></i></a>
+                            <a href="#" th:href="@{/update/{name} (name = ${post.name})}"><i class="far fa-edit"></i></a>
+                            <a href="#" th:href="@{/delete/{name} (name = ${post.name})}"><i class="fas fa-fire"></i></a>
+                        </div>
 
-    From: [[${post.name}]]<br>
-    Date: [[${post.date}]]<br>
-    Wishes: [[${post.wishes}]]<br>
+                    </div>
+                </div>
+        </div>
+        <div class="col">
 
-</p>
+        </div>
+    </div>
+
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -74,5 +74,15 @@ public class HomeController {
         return "welcome";
     }
 
+    @RequestMapping("/like/{name}")
+    public String likePost(@PathVariable("name") String name, Model model){
+        for (Post post : listOfPosts){
+            if(post.getName().equals(name)){
+                post.setLiked(true);
+            }
+        }
+        return "redirect:/";
+    }
+
 
 }
